@@ -81,11 +81,9 @@
       "shoutout" : "Thank you to Phi for your open, warm, and thoughtful speeches. You rekindle my faith in humanity!"
     },
     {
-    },
-    {
-    },
-    {
+      "name" : "Luke Schlangen",
+      "git_username" : "lukeschlangen",
+      "shoutout" : "Huge thanks to everyone in Phi for sharing such personal and inspiring stories about change."
     }
-
   ]
 }
