@@ -2,7 +2,6 @@ var indexOfPhier = 0;
 var phinalIndex = 17;
 
 $(document).ready(function(){
-
   $.get('/data',function(data){
     phinalIndex = data.phirephiters.length - 1;
     showInDOM(data.phirephiters[indexOfPhier]);
@@ -17,7 +16,7 @@ $(document).ready(function(){
       indexOfPhier=0;
       $('.marker:eq(' + phinalIndex +')').css({'background-color': 'gray', 'border-top': '1px solid blue'});
     } else{
-    indexOfPhier++;
+      indexOfPhier++;
     }
 
     $.get('/data',function(data){
@@ -33,7 +32,7 @@ $(document).ready(function(){
       indexOfPhier=phinalIndex;
       $('.marker:eq(0)').css({'background-color': 'gray', 'border-top': '1px solid blue'});
     } else{
-    indexOfPhier--;
+      indexOfPhier--;
     }
 
     $.get('/data',function(data){
@@ -46,12 +45,17 @@ $(document).ready(function(){
   });
 
 
-    function showInDOM(person){
+  function showInDOM(person){
+    $('#people').fadeOut(function(){
       $('#people').find('h1').text(person.name);
       $('#people').find('h2').text('https://github.com/' + person.git_username);
       $('#people').find('h3').text('"'+ person.shoutout + '"');
-    }
+    })
+    $('#people').fadeIn();
+  }
+
 });
+
 
 // Upon page load, get the data from the server
 // $.ajax({
