@@ -1,6 +1,8 @@
 var indexOfPhier = 0;
 var phinalIndex = 17;
 
+var scrollInterval = 2000;
+
 $(document).ready(function(){
   $.get('/data',function(data){
     phinalIndex = data.phirephiters.length - 1;
@@ -11,21 +13,9 @@ $(document).ready(function(){
     $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
   });
 
-  $('#next').on('click', function(){
-    if(indexOfPhier==phinalIndex){
-      indexOfPhier=0;
-      $('.marker:eq(' + phinalIndex +')').css({'background-color': 'gray', 'border-top': '1px solid blue'});
-    } else{
-      indexOfPhier++;
-    }
+  intervalScroll();
 
-    $.get('/data',function(data){
-      showInDOM(data.phirephiters[indexOfPhier]);
-    })
-
-    $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
-    $('.marker:eq(' + indexOfPhier + ')').prev().css({'background-color': 'gray', 'border-top': '1px solid blue'});
-  });
+  $('#next').on('click', nextPerson);
 
   $('#previous').on('click', function(){
     if(indexOfPhier==0){
@@ -44,6 +34,26 @@ $(document).ready(function(){
     $('.marker:eq(' + indexOfPhier + ')').next().css({'background-color': 'gray', 'border-top': '1px solid blue'});
   });
 
+
+  function intervalScroll(){
+    setInterval(nextPerson, scrollInterval);
+  }
+
+  function nextPerson(){
+      if(indexOfPhier==phinalIndex){
+        indexOfPhier=0;
+        $('.marker:eq(' + phinalIndex +')').css({'background-color': 'gray', 'border-top': '1px solid blue'});
+      } else{
+        indexOfPhier++;
+      }
+
+      $.get('/data',function(data){
+        showInDOM(data.phirephiters[indexOfPhier]);
+      })
+
+      $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
+      $('.marker:eq(' + indexOfPhier + ')').prev().css({'background-color': 'gray', 'border-top': '1px solid blue'});
+  }
 
   function showInDOM(person){
     $('#people').fadeOut(function(){
