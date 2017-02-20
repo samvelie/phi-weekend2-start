@@ -1,127 +1,66 @@
+//setting initial variables based on known data
 var indexOfPhier = 0;
 var phinalIndex = 17;
 
-$(document).ready(init);
+$(document).ready(init); //mimicking Scott's single function on DOM ready
 
 function init(){
   $.ajax({
     type: "GET",
     url: "/data",
-    success: function(data){
+    success: function(data){  //on successful server transfer, all this happens:
 
-      phinalIndex = data.phirephiters.length - 1;
-      createTrackBar(data);
-      showInDom(data);
+      phinalIndex = data.phirephiters.length - 1; //updates index length based on server data
+      createTrackBar(data); //creates the visual tracking bar based on the data length
+      showInDom(data);  // displays the initial person's data on the DOM and highlights the initial tracking field
 
-    $('#nav').on('click', 'button', function(){
+      $('#nav').on('click', 'button', function(){
         if($(this).attr('id')=='next'){
-          if(indexOfPhier==phinalIndex){
-            indexOfPhier=0;
-          } else {
-            indexOfPhier++;
-            }
+          nextPerson();
           showInDom(data);
         } else if($(this).attr('id')=='previous'){
-            console.log('previous clicked');
-            if(indexOfPhier==0){
-              indexOfPhier=phinalIndex;
-            } else {
-              indexOfPhier--;
-              }
+          if(indexOfPhier==0){
+            indexOfPhier=phinalIndex;
+          } else {
+            indexOfPhier--;
+          }
           showInDom(data);
-          };
-      });
+        } //end else if
+      }); // end click listener
+    } // end success function in ajax
+  }); // end ajax request
+} //end init function
 
-    }
-  });
+
+function nextPerson(){            //created this function to try recreating the timed scrolling
+  if(indexOfPhier==phinalIndex){
+    indexOfPhier=0;
+  } else{
+    indexOfPhier++;
+  }
 }
 
-function showInDom(serverData){
+function showInDom(serverData){                       //the dynamic displaying function
   displayPhier(serverData.phirephiters[indexOfPhier]);
   highlightCurrentField();
 }
 
-function createTrackBar(serverData){
+function createTrackBar(serverData){  // creates the visual tracking bar
   for (var i = 0; i < serverData.phirephiters.length; i++) {
     $('#trackingBar').append('<div class="marker"></div>');
   }
 }
 
-function highlightCurrentField(){
-  $('.marker').not('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'gray', 'border-top': '1px solid blue'});
-  $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
+function highlightCurrentField(){      // this could be done in less code, maybe by setting another css class to cycle between?
+  $('.marker').not('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'CornflowerBlue', 'border-top': '1px solid blue'});
+  $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'coral', 'border-top': '1px solid red'});
 }
 
-function displayPhier(person){
+function displayPhier(person){ // displays the data at set points in the html
   $('#people').fadeOut(200, function(){
     $('#people').find('h1').text(person.name);
     $('#people').find('h2').text('https://github.com/' + person.git_username);
     $('#people').find('h3').text('"'+ person.shoutout + '"');
   });
-  $('#people').fadeIn(200);
+  $('#people').fadeIn(100);
 }
-
-// $(document).ready(function(){
-//   $.get('/data',function(data){
-//     phinalIndex = data.phirephiters.length - 1;
-//     showInDOM(data.phirephiters[indexOfPhier]);
-//     for (var i = 0; i < data.phirephiters.length; i++) {
-//       $('#trackingBar').append('<div class="marker"></div>');
-//     }
-//     $('.marker:eq(' + indexOfPhier + ')').prev().css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//     $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
-//     $('.marker:eq(' + indexOfPhier + ')').next().css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//   });
-//
-//   // intervalScroll();
-//
-//   $('#next').on('click', nextPerson);
-//
-//   $('#previous').on('click', function(){
-//     if(indexOfPhier==0){
-//       indexOfPhier=phinalIndex;
-//       $('.marker:eq(0)').css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//     } else{
-//       indexOfPhier--;
-//     }
-//
-//     $.get('/data',function(data){
-//       showInDOM(data.phirephiters[indexOfPhier]);
-//       console.log(data);
-//     })
-//
-//     $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
-//     $('.marker:eq(' + indexOfPhier + ')').next().css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//   });
-//
-//
-//   function intervalScroll(){
-//     setInterval(nextPerson, scrollInterval);
-//   }
-//
-//   function nextPerson(){
-//       if(indexOfPhier==phinalIndex){
-//         indexOfPhier=0;
-//         $('.marker:eq(' + phinalIndex +')').css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//       } else{
-//         indexOfPhier++;
-//       }
-//
-//       $.get('/data',function(data){
-//         showInDOM(data.phirephiters[indexOfPhier]);
-//       })
-//
-//       $('.marker:eq(' + indexOfPhier + ')').css({'background-color': 'blue', 'border-top': '1px solid red'});
-//       $('.marker:eq(' + indexOfPhier + ')').prev().css({'background-color': 'gray', 'border-top': '1px solid blue'});
-//   }
-//
-//   function showInDOM(person){
-//     $('#people').fadeOut(function(){
-//       $('#people').find('h1').text(person.name);
-//       $('#people').find('h2').text('https://github.com/' + person.git_username);
-//       $('#people').find('h3').text('"'+ person.shoutout + '"');
-//     })
-//     $('#people').fadeIn();
-//   }
-//
-// });
