@@ -1,7 +1,7 @@
 .marker {
   display: inline-block;
-  height: 20px;
-  width: 10px;
+  height: 30px;
+  width: 15px;
   border-right: 1px solid black;
   border-top: 1px solid blue;
   background-color: gray;
